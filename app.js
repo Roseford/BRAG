@@ -20,6 +20,23 @@ const app = express();
 // 1) Global Middlewares
 // This is how we use middleware (app.use)
 
+// Set security HTTP Header (Helmet )
+app.use(helmet());
+
+// Use Morgan to log api request in development mode
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000,
+//   message: 'Too many request from this IP. Please try again in an hour!',
+// });
+
+// Enabling CORS
+app.use(cors());
+
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
@@ -44,23 +61,6 @@ passport.use(
     googleAuth
   )
 );
-
-// Set security HTTP Header (Helmet )
-app.use(helmet());
-
-// Use Morgan to log api request in development mode
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: 'Too many request from this IP. Please try again in an hour!',
-// });
-
-// Enabling CORS
-app.use(cors());
 
 // Limit request from the same API
 // app.use('/api', limiter);
