@@ -62,13 +62,3 @@ exports.deleteMany = catchAsync(async (req, res, next) => {
   User.deleteMany})
 
 exports.deleteUser = factory.deleteOne(User);
-
-exports.updateMany = catchAsync(async (req, res, next) => {
-  await User.updateMany({}, { $unset: { phoneNumber: 1 } });
-
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
-    

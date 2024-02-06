@@ -72,8 +72,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
       token: crypto.randomBytes(16).toString('hex'),
       expireAt: Date.now() + 24 * 60 * 60 * 1000,
     });
-    await User.findOneAndUpdate(
-      { email },)
+    // await User.findOneAndUpdate(
+    //   { email },)
   
     await sendEmail({
       email: email,
