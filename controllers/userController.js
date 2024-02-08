@@ -58,7 +58,4 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteMany = catchAsync(async (req, res, next) => {
-  User.deleteMany})
-
 exports.deleteUser = factory.deleteOne(User);
