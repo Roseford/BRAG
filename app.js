@@ -1,23 +1,22 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
 // const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const session = require('express-session');
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const hpp = require("hpp");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const session = require("express-session");
 
-const AppError = require('./utils/AppError');
-const userRouter = require('./routes/userRoutes');
-const emailRouter = require('./routes/emailRouter');
-const businessRouter = require('./routes/businessRouter');
-const reviewRouter = require('./routes/reviewRouter');
+const AppError = require("./utils/AppError");
+const userRouter = require("./routes/userRoutes");
+const emailRouter = require("./routes/emailRouter");
+const businessRouter = require("./routes/businessRouter")
 
-const globalErrorHandler = require('./controllers/errorController');
-const { googleAuth } = require('./controllers/authController');
+const globalErrorHandler = require("./controllers/errorController");
+const { googleAuth } = require("./controllers/authController");
 const app = express();
 
 // 1) Global Middlewares
@@ -27,8 +26,8 @@ const app = express();
 app.use(helmet());
 
 // Use Morgan to log api request in development mode
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 // const limiter = rateLimit({
@@ -40,7 +39,30 @@ if (process.env.NODE_ENV === 'development') {
 // Enabling CORS
 app.use(cors());
 
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    // store:
+  })
+);
+
 // Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: `${process.env.GOOGLE_CLIENT_ID}`,
+      clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
+      callbackURL: "/api/v1/users/google/callback",
+      scope: ["profile", "email"],
+    },
+    googleAuth
+  )
+);
 
 // Limit request from the same API
 // app.use('/api', limiter);
@@ -57,18 +79,20 @@ app.use(xss());
 // Preventing Parameter Pollution
 app.use(
   hpp({
-    whitelist: ['ratingsAverage', 'ratingsQuantity', 'price'],
+    whitelist: ["ratingsAverage", "ratingsQuantity", "price"],
   })
 );
 
 // Routes
-app.use('/verifyEmail', emailRouter);
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/businesses', businessRouter);
-app.use('/api/v1/reviews', reviewRouter);
+app.use("/verifyEmail", emailRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/businesses", businessRouter);
 
-app.all('*', (req, res, next) => {
-  const err = new AppError(`Can't find ${req.originalUrl} on this server`, 404);
+app.all("*", (req, res, next) => {
+  const err = new AppError(
+    `Can't find ${req.originalUrl} on this server`,
+    404
+  );
 
   // The next function accepts an argument that we use as the error object
   next(err);

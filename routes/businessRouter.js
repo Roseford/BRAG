@@ -27,6 +27,8 @@ upload.fields([
 businessMiddleware.uploadAndParseReq,
 businessController.updateBusiness);
 
+router.get('/search', businessController.businessSearch);
+
 router.delete('/:id', authController.protect, businessController.deleteBusiness);
 
 
