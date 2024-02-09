@@ -13,6 +13,9 @@ const session = require('express-session');
 const AppError = require('./utils/AppError');
 const userRouter = require('./routes/userRoutes');
 const emailRouter = require('./routes/emailRouter');
+const businessRouter = require('./routes/businessRouter');
+const reviewRouter = require('./routes/reviewRouter');
+
 const globalErrorHandler = require('./controllers/errorController');
 const { googleAuth } = require('./controllers/authController');
 const app = express();
@@ -61,6 +64,8 @@ app.use(
 // Routes
 app.use('/verifyEmail', emailRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/businesses', businessRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 app.all('*', (req, res, next) => {
   const err = new AppError(`Can't find ${req.originalUrl} on this server`, 404);
