@@ -2,21 +2,24 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 // const rateLimit = require('express-rate-limit');
-const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
-const hpp = require("hpp");
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const session = require("express-session");
 
-const AppError = require("./utils/AppError");
-const userRouter = require("./routes/userRoutes");
-const emailRouter = require("./routes/emailRouter");
-const businessRouter = require("./routes/businessRouter")
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const passport = require('passport');
 
-const globalErrorHandler = require("./controllers/errorController");
-const { googleAuth } = require("./controllers/authController");
+const session = require('express-session');
+
+const AppError = require('./utils/AppError');
+const userRouter = require('./routes/userRoutes');
+const emailRouter = require('./routes/emailRouter');
+const businessRouter = require('./routes/businessRouter');
+const reviewRouter = require('./routes/reviewRouter');
+
+const globalErrorHandler = require('./controllers/errorController');
+const { googleAuth } = require('./controllers/authController');
+
 const app = express();
 
 // 1) Global Middlewares
@@ -87,6 +90,7 @@ app.use(
 app.use("/verifyEmail", emailRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/businesses", businessRouter);
+
 
 app.all("*", (req, res, next) => {
   const err = new AppError(
