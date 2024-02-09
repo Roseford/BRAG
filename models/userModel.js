@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Full name is required'],
     },
+
     email: {
       type: String,
       required: [true, 'Email address is required'],
@@ -34,16 +35,24 @@ const userSchema = new mongoose.Schema(
       type: Date,
       select: false,
     },
+
     passwordResetToken: String,
 
     status: {
       type: String,
       default: 'active',
     },
+
     isVerified: {
       type: Boolean,
       default: false,
     },
+
+    hasBusiness: {
+      type: Boolean,
+      default: false,
+    },
+
     otp: {
       type: String,
       select: false,

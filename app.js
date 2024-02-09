@@ -86,7 +86,7 @@ app.use(
 // Routes
 app.use("/verifyEmail", emailRouter);
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/businesses", businessRouter)
+app.use("/api/v1/businesses", businessRouter);
 
 app.all("*", (req, res, next) => {
   const err = new AppError(
