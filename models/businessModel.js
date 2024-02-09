@@ -52,6 +52,7 @@ const businessSchema = new mongoose.Schema(
 
         businessCategory: {
             type: String,
+            enum: ['Beauty products', 'Hair and makeup', 'Snacks', 'Clothings', 'Restaurant', 'Entertainment', 'Accessories', 'Services', 'Others'],
             required: [true, 'Business category is required'],
         },
 

@@ -1,8 +1,13 @@
 const catchAsync = require('../utils/catchAsync');
 const cloudinary = require('../utils/cloudinary');
+const User = require('../models/userModel')
 
 exports.attachUserId = catchAsync(async (req, res, next) => {
     req.body.user = req.user.id;
+
+    // Update the user model to set 'hasBusiness' to true
+    await User.findByIdAndUpdate(req.user.id, { hasBusiness: true });
+
     next();
 });
 
