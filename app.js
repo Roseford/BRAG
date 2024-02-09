@@ -7,7 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 const session = require('express-session');
 
 const AppError = require('./utils/AppError');
