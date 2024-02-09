@@ -1,6 +1,6 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
 // const rateLimit = require('express-rate-limit');
 
 const helmet = require('helmet');
@@ -29,8 +29,8 @@ const app = express();
 app.use(helmet());
 
 // Use Morgan to log api request in development mode
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
 }
 
 // const limiter = rateLimit({
@@ -51,22 +51,6 @@ app.use(
   })
 );
 
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: `${process.env.GOOGLE_CLIENT_ID}`,
-      clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
-      callbackURL: "/api/v1/users/google/callback",
-      scope: ["profile", "email"],
-    },
-    googleAuth
-  )
-);
-
 // Limit request from the same API
 // app.use('/api', limiter);
 
@@ -82,21 +66,18 @@ app.use(xss());
 // Preventing Parameter Pollution
 app.use(
   hpp({
-    whitelist: ["ratingsAverage", "ratingsQuantity", "price"],
+    whitelist: ['ratingsAverage', 'ratingsQuantity', 'price'],
   })
 );
 
 // Routes
-app.use("/verifyEmail", emailRouter);
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/businesses", businessRouter);
+app.use('/verifyEmail', emailRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/businesses', businessRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
-
-app.all("*", (req, res, next) => {
-  const err = new AppError(
-    `Can't find ${req.originalUrl} on this server`,
-    404
-  );
+app.all('*', (req, res, next) => {
+  const err = new AppError(`Can't find ${req.originalUrl} on this server`, 404);
 
   // The next function accepts an argument that we use as the error object
   next(err);
