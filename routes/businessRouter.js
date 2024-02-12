@@ -6,7 +6,7 @@ const upload = require('./../utils/multer')
 
 const router = express.Router();
 
-router.get('/getAllBusinesses', authController.protect, businessController.getAllBusinesses);
+router.get('/getAllBusinesses', businessController.getAllBusinesses);
 router.get('/:id', authController.protect, businessController.getSingleBusiness);
 
 router.post('/createBusiness', 
