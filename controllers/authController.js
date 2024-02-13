@@ -65,19 +65,19 @@ exports.signUp = catchAsync(async (req, res, next) => {
   let payload = { fullName, email, password };
   const newUser = await User.create(payload);
   // Generate 5 digit Otp
-
-  const userToken = await Token.create({
-    userId: this.id,
-    token: crypto.randomBytes(16).toString('hex'),
-    expireAt: Date.now() + 24 * 60 * 60 * 1000,
-  });
-  // await User.findOneAndUpdate(
-  //   { email },)
-
-  await sendEmail({
-    email: email,
-    subject: 'BRAG - Confirm Sign Up',
-    text: `
+  {
+    const userToken = await Token.create({
+      userId: newUser.id,
+      token: crypto.randomBytes(16).toString('hex'),
+      expireAt: Date.now() + 24 * 60 * 60 * 1000,
+    });
+    // await User.findOneAndUpdate(
+    //   { email },)
+  
+    await sendEmail({
+      email: email,
+      subject: 'BRAG - Confirm Sign Up',
+      text: `
       Welcome to BRAG . Confirm you signed up
       
       Please click http://${process.env.BASE_HOST}/verifyEmail/${email}/${userToken.token}
@@ -217,11 +217,17 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // Save the document
   await user.save({ validateBeforeSave: false });
 
+  //Send Email
+
+  const resetURL = `https://brag-frontend.vercel.app/createpassword/${resetToken}`;
+
+  const text = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to ${resetURL}\n If you didn't initiate this action you can simply ignore this message`;
+
   try {
     await sendEmail({
       email,
       subject: 'Forgot Password. Valid For 10 minutes',
-      text: `Your password reset token is ${resetToken}`,
+      text,
     });
     sendResponse(null, res, 200, {
       message: 'Reset Token Sent to Email',

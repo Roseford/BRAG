@@ -6,7 +6,7 @@ const upload = require('./../utils/multer')
 
 const router = express.Router();
 
-router.get('/getAllBusinesses', authController.protect, businessController.getAllBusinesses);
+router.get('/getAllBusinesses', businessController.getAllBusinesses);
 router.get('/:id', authController.protect, businessController.getSingleBusiness);
 
 router.post('/createBusiness', 
@@ -27,7 +27,7 @@ upload.fields([
 businessMiddleware.uploadAndParseReq,
 businessController.updateBusiness);
 
-router.get('/search', businessController.businessSearch);
+router.get('/businessSearch/:query', businessController.businessSearch);
 
 router.delete('/:id', authController.protect, businessController.deleteBusiness);
 
