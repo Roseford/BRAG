@@ -42,6 +42,20 @@ reviewSchema.pre(/^find/, function (next) {
   this.populate('business');
   next();
 });
+reviewSchema.statics.calcReviewCount = async function (id) {
+  const formsCount = await this.count({ business: id });
+
+  await Organisation.findByIdAndUpdate(
+    id,
+    {
+      formsCount,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
 
 const Review = mongoose.model('Review', reviewSchema, 'reviews');
 
