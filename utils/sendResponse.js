@@ -5,7 +5,7 @@ module.exports = function (
   options = {
     result: false,
     message: false,
-    accessToken: false,
+    token: false,
     refreshToken: false,
   }
 ) {
@@ -13,7 +13,7 @@ module.exports = function (
     status: 'success',
     result: options.result ? data.length : undefined,
     message: options.message ? options.message : undefined,
-    accessToken: options.accessToken ? options.accessToken : undefined,
+    token: options.token ? options.token : undefined,
     refreshToken: options.refreshToken ? options.refreshToken : undefined,
     data,
   });
