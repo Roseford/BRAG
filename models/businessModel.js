@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const randomstring = require('randomstring')
+const randomstring = require('randomstring');
 const businessSchema = new mongoose.Schema(
   {
     user: {
@@ -12,7 +12,7 @@ const businessSchema = new mongoose.Schema(
     logo: {
       type: {
         logoUrl: String,
-        publicId: String,
+        pubblicId: String,
       },
     },
 
@@ -20,7 +20,7 @@ const businessSchema = new mongoose.Schema(
       type: [
         {
           imgUrl: String,
-          pubblicId: String,
+          publicId: String,
         },
       ],
     },
@@ -33,7 +33,7 @@ const businessSchema = new mongoose.Schema(
     businessMail: {
       type: String,
       required: [true, 'Business mail is required'],
-      unique: [true, 'Email is already in use'],
+
       validate: [
         validator.isEmail,
         'Email provided must be a valid email address',
@@ -48,7 +48,6 @@ const businessSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: [true, 'Phone number is required'],
-      unique: [true, 'Phone number has been used before'],
     },
 
     location: {
@@ -159,6 +158,7 @@ businessSchema.pre('save', async function (next) {
     this.businessName.replace(/[^A-Z0-9]+/gi, '').toLowerCase() +
     randomstring.generate({ length: 4 });
   this.slug = slugName;
+  console.log(slugName);
   next();
 });
 
