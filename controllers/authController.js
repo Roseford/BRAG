@@ -21,9 +21,9 @@ const signToken = (id) => {
 
 const createAndSendToken = async (data, statusCode, res, next) => {
   // Sign Token
-  const token  = signToken(data._id);
-    // Remove Password from output
-    data.password = undefined;
+  const token = signToken(data._id);
+  // Remove Password from output
+  data.password = undefined;
 
   // Send Response
   sendResponse(data, res, statusCode, {
@@ -60,32 +60,30 @@ const createAndSendTokenWithEmail = async (
   sendResponse(data, res, statusCode, { token });
 };
 
-
 exports.signUp = catchAsync(async (req, res, next) => {
   const { fullName, email, password } = req.body;
   let payload = { fullName, email, password };
   const newUser = await User.create(payload);
   // Generate 5 digit Otp
-  {
-    const userToken = await Token.create({
-      userId: newUser.id,
-      token: crypto.randomBytes(16).toString('hex'),
-      expireAt: Date.now() + 24 * 60 * 60 * 1000,
-    });
-    // await User.findOneAndUpdate(
-    //   { email },)
-  
-    await sendEmail({
-      email: email,
-      subject: 'BRAG - Confirm Sign Up',
-      text: `
+
+  const userToken = await Token.create({
+    userId: newUser.id,
+    token: crypto.randomBytes(16).toString('hex'),
+    expireAt: Date.now() + 24 * 60 * 60 * 1000,
+  });
+  // await User.findOneAndUpdate(
+  //   { email },)
+
+  await sendEmail({
+    email: email,
+    subject: 'BRAG - Confirm Sign Up',
+    text: `
       Welcome to BRAG . Confirm you signed up
       
       Please click http://${process.env.BASE_HOST}/verifyEmail/${email}/${userToken.token}
       It expires in a day
         `,
-    });
-  }
+  });
 
   createAndSendToken(newUser, 201, res, next);
 });
@@ -174,7 +172,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = newConfirmPassword;
   // Saves the user document
   await user.save();
-  
 
   // Sends Response with email
   // const emailOptions = {

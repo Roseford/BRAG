@@ -131,6 +131,14 @@ const businessSchema = new mongoose.Schema(
     slug: {
       type: String,
     },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     strict: true,
