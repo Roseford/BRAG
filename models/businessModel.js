@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const randomstring = require('randomstring')
 const businessSchema = new mongoose.Schema(
   {
     user: {

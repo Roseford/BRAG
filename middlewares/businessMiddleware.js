@@ -4,12 +4,20 @@ const User = require('../models/userModel')
 
 exports.attachUserId = catchAsync(async (req, res, next) => {
     req.body.user = req.user.id;
+    console.log(req.user.id);
 
     // Update the user model to set 'hasBusiness' to true
     await User.findByIdAndUpdate(req.user.id, { hasBusiness: true });
 
     next();
 });
+
+exports.getForUser = catchAsync(async (req, res, next) => {
+    req.query.user = req.user._id;
+console.log(req.user._id);
+
+    next();
+})
 
 exports.uploadAndParseReq = catchAsync(async (req, res, next) => {
     // Upload Logo to Cloudinary (if present)

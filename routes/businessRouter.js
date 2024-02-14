@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.get('/getAllBusinesses', businessController.getAllBusinesses);
 router.get('/:id', authController.protect, businessController.getSingleBusiness);
+router.get('/my-business', authController.protect, businessMiddleware.getForUser, businessController.getAllBusinesses)
 
 router.post('/createBusiness', 
 authController.protect,
