@@ -219,7 +219,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   //Send Email
 
-  const resetURL = `https://brag-frontend.vercel.app/createpassword/${resetToken}`;
+  const resetURL = `https://brag-chi.vercel.app/createpassword/${resetToken}`;
 
   const text = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to ${resetURL}\n If you didn't initiate this action you can simply ignore this message`;
 
