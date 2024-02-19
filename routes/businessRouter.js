@@ -15,7 +15,6 @@ router.get(
 );
 router.get(
   '/:id',
-  authController.protect,
   businessController.getSingleBusiness
 );
 
